@@ -87,6 +87,7 @@
                     return;
                 }
 
+                const installer_times = new Map();
                 let total_diff = 0;
                 tables.forEach((row) => {
                     const items = row.getElementsByTagName('td');
@@ -95,16 +96,30 @@
                     }
 
                     const time_item = items[2];
-                    if (!time_item && !time_item.innerText) {
+                    const installer_item = items[4];
+                    if (!time_item || !time_item.innerText || !installer_item || !installer_item.innerText) {
                         return;
                     }
 
-                    const range = time_item.innerText;
-                    const local_diff = parseRangeIntoDifference(range);
-                    time_item.innerText += "\n" + differenceToHoursMinutesFormated(local_diff);
+                    const local_diff = parseRangeIntoDifference(time_item.innerText);
+                    //time_item.innerText += "\t" + differenceToHoursMinutesFormated(local_diff);
                     total_diff += local_diff;
+
+                    const installer = installer_item.innerText;
+                    const old_installer_diff = (installer_times.has(installer)) ? installer_times.get(installer) : 0;
+                    installer_times.set(installer, old_installer_diff + local_diff);
                 });
-                header.textContent += " - " + differenceToHoursMinutesFormated(total_diff);
+                header.textContent += " - ";
+                const info_btn = document.createElement('span');
+                info_btn.innerText = differenceToHoursMinutesFormated(total_diff);
+                header.appendChild(info_btn);
+                info_btn.onclick = () => {
+                    let display = '';
+                    for (const [installer, time] of installer_times) {
+                        display += installer + '\t - \t' + differenceToHoursMinutesFormated(time) + '\n\n';
+                    }
+                    alert(display);
+                };
             }
         });
     }, 3000);
