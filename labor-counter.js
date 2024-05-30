@@ -41,17 +41,20 @@ function differenceToHoursMinutesFormated(millisecounds) {
     return hoursMinutesFormated(hm.hours, hm.minutes);
 }
 
+/**
+ * @param {Element} box
+ */
 function forEachBox(box) {
+    if (!box || !(box instanceof Element)) {
+        return;
+    }
+
     const header = box.querySelector('td');
     if (!header || !header.textContent || !header.textContent.includes('Service Appointments') || header.textContent.includes('-')) {
         return;
     }
 
     const tables = Array.from(box.querySelectorAll("tr")).slice(1);
-    if (!tables) {
-        return;
-    }
-
     const installer_times = new Map();
     let total_diff = 0;
 
@@ -72,7 +75,6 @@ function forEachBox(box) {
         }
 
         const local_diff = parseRangeIntoDifference(time_item.innerText);
-        //time_item.innerText += "\t" + differenceToHoursMinutesFormated(local_diff);
         total_diff += local_diff;
 
         const installer = installer_item.innerText;
@@ -80,14 +82,15 @@ function forEachBox(box) {
         installer_times.set(installer, old_installer_diff + local_diff);
     });
 
+    let alertDisplay = '';
+    for (const [installer, time] of installer_times) {
+        alertDisplay += installer + '\t - \t' + differenceToHoursMinutesFormated(time) + '\n\n';
+    }
+
     const info_btn = document.createElement('span');
     info_btn.innerText = differenceToHoursMinutesFormated(total_diff);
     info_btn.onclick = () => {
-        let display = '';
-        for (const [installer, time] of installer_times) {
-            display += installer + '\t - \t' + differenceToHoursMinutesFormated(time) + '\n\n';
-        }
-        alert(display);
+        alert(alertDisplay);
     };
 
     header.textContent += " - ";
@@ -96,7 +99,7 @@ function forEachBox(box) {
 
 setInterval(() => {
     const fraRightFrame = document.getElementById("fraRightFrame");
-    if (!fraRightFrame) {
+    if (!fraRightFrame || !(fraRightFrame instanceof HTMLIFrameElement)) {
         return;
     }
 
@@ -106,7 +109,7 @@ setInterval(() => {
     }
 
     const fraJobMain = fraRightFrameDoc.getElementById("fraJobMain");
-    if (!fraJobMain) {
+    if (!fraJobMain || !(fraJobMain instanceof HTMLIFrameElement)) {
         return;
     }
 
@@ -115,10 +118,5 @@ setInterval(() => {
         return;
     }
 
-    const boxes = fraJobMainDoc.querySelectorAll(".boxing-1");
-    if (!boxes) {
-        return;
-    }
-
-    boxes.forEach(forEachBox);
+    (fraJobMainDoc.querySelectorAll(".boxing-1")).forEach(forEachBox);
 }, 3000);
