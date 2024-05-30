@@ -5,8 +5,8 @@
 // @description  ...
 // @author       zachary@computingfun.org
 // @match        https://dashboard.calclosets.com/*
-// @updateURL    https://your-update-url.com/path/to/your-script.user.js
-// @downloadURL  https://your-update-url.com/path/to/your-script.user.js
+// @updateURL    https://raw.githubusercontent.com/computingfun-org/CCDash-Ext/main/userscript.js
+// @downloadURL  https://raw.githubusercontent.com/computingfun-org/CCDash-Ext/main/userscript.js
 // ==/UserScript==
 
 (function () {
