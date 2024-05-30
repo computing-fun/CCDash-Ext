@@ -1,8 +1,12 @@
 'use strict';
 
+/**
+ * 
+ * @returns 
+ */
 function numberInput() {
     const input = document.createElement('span');
-    input.setAttribute('contenteditable', true);
+    input.setAttribute('contenteditable', 'true');
     input.style.width = '30px';
     input.style.height = '100%';
     input.style.display = 'inline-block';
@@ -14,21 +18,20 @@ function numberInput() {
 
 setInterval(() => {
     const fraRightFrame = document.getElementById('fraRightFrame');
-    if (!fraRightFrame) {
+    if (!fraRightFrame || !(fraRightFrame instanceof HTMLIFrameElement)) {
         return;
     }
+
     const fraRightFrameDoc = fraRightFrame.contentDocument;
     if (!fraRightFrameDoc) {
         return;
     }
-    const inputs = fraRightFrameDoc.querySelectorAll('select.cap-tron');
-    if (!inputs) {
-        return;
-    }
-    inputs.forEach((defaultInput) => {
-        if (!defaultInput || defaultInput.getAttribute('hm-input')) {
+
+    (fraRightFrameDoc.querySelectorAll('select.cap-tron')).forEach((defaultInput) => {
+        if (defaultInput.getAttribute('hm-input')) {
             return;
         }
+
         const parent = defaultInput.parentElement;
         if (!parent) {
             return;
