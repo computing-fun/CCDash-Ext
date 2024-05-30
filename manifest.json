@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "version": "0.1",
+    "name": "CCDash Ext",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://dashboard.calclosets.com/*"
+            ],
+            "js": [
+                "job-titles.js",
+                "labor-counter.js",
+                "times-hm-inputs.js"
+            ]
+        }
+    ]
+}
