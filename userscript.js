@@ -11,20 +11,7 @@
 
 (function () {
     'use strict';
-
-    /**
-     * 
-     * @param {string} url
-     */
-    function loadScript(url) {
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = url;
-        document.head.appendChild(script);
-    }
-
-    loadScript("https://github.com/computingfun-org/CCDash-Ext/raw/main/job-titles.js");
-    loadScript("https://github.com/computingfun-org/CCDash-Ext/raw/main/times-hm-inputs.js");
-    loadScript("https://github.com/computingfun-org/CCDash-Ext/raw/main/labor-counter.js");
-
+    import("https://github.com/computingfun-org/CCDash-Ext/raw/main/job-titles.js");
+    import("https://github.com/computingfun-org/CCDash-Ext/raw/main/times-hm-inputs.js");
+    import("https://github.com/computingfun-org/CCDash-Ext/raw/main/labor-counter.js");
 })();
