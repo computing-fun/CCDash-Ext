@@ -5,13 +5,13 @@
 // @description  ...
 // @author       zachary@computingfun.org
 // @match        https://dashboard.calclosets.com/*
-// @updateURL    https://raw.githubusercontent.com/computingfun-org/CCDash-Ext/main/userscript.js
-// @downloadURL  https://raw.githubusercontent.com/computingfun-org/CCDash-Ext/main/userscript.js
+// @updateURL    https://cdn.jsdelivr.net/gh/computing-fun/ccdash-ext/userscript.js
+// @downloadURL  https://cdn.jsdelivr.net/gh/computing-fun/ccdash-ext/userscript.js
 // ==/UserScript==
 
 (function () {
     'use strict';
-    import("https://github.com/computingfun-org/CCDash-Ext/raw/main/job-titles.js");
-    import("https://github.com/computingfun-org/CCDash-Ext/raw/main/times-hm-inputs.js");
-    import("https://github.com/computingfun-org/CCDash-Ext/raw/main/labor-counter.js");
+    ["job-titles", "times-hm-inputs", "labor-counter"].forEach((name) => {
+        import("https://cdn.jsdelivr.net/gh/computing-fun/ccdash-ext/" + name + ".js");
+    });
 })();
