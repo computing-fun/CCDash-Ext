@@ -67,4 +67,4 @@ setInterval(() => {
         parent.appendChild(hoursInput);
         parent.appendChild(minutesInput);
     });
-}, 5000);
+}, 1000);

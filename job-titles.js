@@ -57,5 +57,5 @@ const getTitle = function () {
 
 setInterval(function () {
     document.title = getTitle();
-}, 3000);
+}, 1000);
 

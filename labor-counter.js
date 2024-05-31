@@ -141,4 +141,4 @@ setInterval(() => {
         header.textContent += " - ";
         header.appendChild(info_btn);
     });
-}, 3000);
+}, 1000);
