@@ -1,22 +1,8 @@
 'use strict';
 
-/**
- * 
- * @returns 
- */
-function numberInput() {
-    const input = document.createElement('span');
-    input.setAttribute('contenteditable', 'true');
-    input.style.width = '30px';
-    input.style.height = '100%';
-    input.style.display = 'inline-block';
-    input.style.border = 'solid 1px lightgray';
-    input.style.marginLeft = '5px';
-    input.style.marginRight = '5px';
-    return input;
-}
-
 setInterval(() => {
+    const TAG = 'hm-input';
+
     const fraRightFrame = document.getElementById('fraRightFrame');
     if (!fraRightFrame || !(fraRightFrame instanceof HTMLIFrameElement)) {
         return;
@@ -27,8 +13,9 @@ setInterval(() => {
         return;
     }
 
-    (fraRightFrameDoc.querySelectorAll('select.cap-tron')).forEach((defaultInput) => {
-        if (defaultInput.getAttribute('hm-input')) {
+    const defaultInputs = fraRightFrameDoc.querySelectorAll('select.cap-tron');
+    defaultInputs.forEach((defaultInput) => {
+        if (defaultInput.getAttribute(TAG)) {
             return;
         }
 
@@ -37,34 +24,48 @@ setInterval(() => {
             return;
         }
 
-        const hoursInput = numberInput();
-        const minutesInput = numberInput();
+        const input = document.createElement('span');
+        input.setAttribute('contenteditable', 'true');
+        input.style.width = '50px';
+        input.style.height = '100%';
+        input.style.display = 'inline-block';
+        input.style.border = 'solid 1px lightgray';
+        input.style.marginLeft = '5px';
+        input.style.marginRight = '5px';
 
-        hoursInput.addEventListener('keypress', (event) => {
+        input.addEventListener('keypress', (event) => {
+            input.style.backgroundColor = '';
             if (event.key === 'Enter') {
                 event.preventDefault();
-                minutesInput.focus();
+                const inputBuffers = input.innerText.split(' ');
+
+                defaultInput.value = function () {
+                    switch (inputBuffers.length) {
+                        case 0:
+                            return 0;
+                        case 1:
+                            return Number(inputBuffers[0]);
+                        case 2:
+                            // if either number is NaN this will return NaN so we don't need to check for NaN.
+                            const minutesToHours = 60;
+                            const hours = Number(inputBuffers[0]);
+                            const minutes = Number(inputBuffers[1]);
+                            if (hours < 0) {
+                                return (hours * minutesToHours) - minutes;
+                            }
+                            return (hours * minutesToHours) + minutes;
+                        default:
+                            return NaN;
+                    }
+                }();
+
+                if (!defaultInput.value) {
+                    input.style.backgroundColor = 'red';
+                }
             }
         });
 
-        minutesInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                const hours = Number(hoursInput.innerText.trim());
-                const minutes = Number(minutesInput.innerText.trim());
-                if (isNaN(hours) || isNaN(minutes)) {
-                    return;
-                }
-                if (hours < 0) {
-                    defaultInput.value = (hours * 60) - minutes;
-                } else {
-                    defaultInput.value = (hours * 60) + minutes;
-                }
-            }
-        });
-
-        defaultInput.setAttribute('hm-input', true);
-        parent.appendChild(hoursInput);
-        parent.appendChild(minutesInput);
+        defaultInput.setAttribute(TAG, true);
+        parent.appendChild(input);
     });
 }, 1000);
